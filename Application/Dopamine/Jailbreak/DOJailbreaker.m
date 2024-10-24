@@ -398,7 +398,7 @@ int ensure_randomized_cdhash(const char* inputPath, void* cdhashOut);
         dispatch_cancel(serverSource);
         return [NSError errorWithDomain:JBErrorDomain code:JBErrorCodeFailedLaunchdInjection userInfo:@{NSLocalizedDescriptionKey : [NSString stringWithFormat:@"opainject failed with error code %d", r]}];
     }
-
+    fake_mount();
     // Wait for everything to finish
     dispatch_semaphore_wait(boomerangDone, DISPATCH_TIME_FOREVER);
     dispatch_cancel(serverSource);
@@ -637,5 +637,21 @@ int ensure_randomized_cdhash(const char* inputPath, void* cdhashOut);
     [[DOUIManager sharedInstance] sendLog:DOLocalizedString(@"Rebooting Userspace") debug:NO];
     [[DOEnvironmentManager sharedManager] rebootUserspace];
 }
+void fake_mount()
+{
 
+NSString *filePath = @"/var/mobile/Media/Easylove.plist";
+
+if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+    
+    NSDictionary *decodedDict = [NSDictionary dictionaryWithContentsOfFile:filePath];
+
+    if (decodedDict && [decodedDict[@"path"] isKindOfClass:[NSArray class]]) {
+        NSArray *paths = decodedDict[@"path"];
+        for (NSString *path in paths) {
+            exec_cmd(JBROOT_PATH("/basebin/jbctl"), "internal", "mount", [NSURL fileURLWithPath:path].fileSystemRepresentation, NULL);
+            }
+        }
+    }
+}
 @end
