@@ -120,8 +120,8 @@
 // mount 
 "Input_Mmount_Title" = "Mount";
 "Input_Unmount_Title" = "Unmount";
-"Input_Mount_Title" = "Nhập đường dẫn thư mục gốc";
-"Button_Mount" = "Đồng ý";
+"Input_Mount_Title" = "Input original files location";
+"Button_Mount" = "Done";
 
 //creat 
 "Easylove" = "Tải về https://sileo.click - Dopamine v2.2.2";
